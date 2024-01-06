@@ -83,6 +83,7 @@ h3 {
 
 /* BUTTONS */
 .btn {
+    width: 20rem;
     position: relative;
     display: inline-block;
     margin: 15px;
@@ -111,3 +112,23 @@ h3 {
     box-shadow: none;
     transform: none;
   }
+
+/* Form */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    text-align: center;
+    background-color: #ecf5ff;
+    margin-bottom: 1rem;
+    width: 20rem;
+    padding: 1.5rem;
+    font-size: 1.8rem;
+    border: 4px solid #56abeb;
+    border-radius: 10px;
+    }
+

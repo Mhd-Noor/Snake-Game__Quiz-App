@@ -51,9 +51,10 @@ startGame = () => {
 };
 
 getNewQuestion = () => {
-    // if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
-    //     return window.location.assign("/end.html");
-    // }
+    if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
+         localStorage.setItem('MostrecentScore', score);
+        return window.location.assign("/end.html");
+    }
     questionCounter ++;
     progressText.innerText = `Question ${questionCounter}/${MAX_QUESTIONS}`;
     progressBarfull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
