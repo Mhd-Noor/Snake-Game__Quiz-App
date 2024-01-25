@@ -3,7 +3,8 @@ const choices = Array.from(document.getElementsByClassName('choice-text'));
 const progressText = document.getElementById('progressText');
 const score_text = document.getElementById('score-display');
 const progressBarfull = document.getElementById('progressBarfull');
-
+const loader = document.getElementById('loader');
+const game = document.getElementById('game');
 
 let currentQuestion = {};
 let acceptingAnswers = false;
@@ -11,43 +12,48 @@ let questionCounter = 0;
 let score =  0;
 let availableQuestions = [];
 
-let questions = [
-    {
-        question: "My favorite color",
-        choice1: "red",
-        choice2: "blue",
-        choice3: "green",
-        choice4: "brown",
-        answer: 1
-    },
-    {
-        question: "My favorite food",
-        choice1: "ramen",
-        choice2: "cheese fries",
-        choice3: "buriyani",
-        choice4: "qorma",
-        answer: 3
-    },
-    {
-        question: "My favorite city",
-        choice1: "london",
-        choice2: "lahore",
-        choice3: "leeds",
-        choice4: "madrid",
-        answer: 4
-    }
-];
+let questions = [];
+fetch("https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple")
+    .then(res => {
+        return res.json();
+    })
+    .then(loadedQuestions => {
+        console.log("Q is working");
+        questions = loadedQuestions.results.map( loadedQuestion => {
+            const formattedQuestion = {
+                question: loadedQuestion.question
+            };
 
+            const answerChoices = [...loadedQuestion.incorrect_answers];
+            formattedQuestion.answer = Math.floor(Math.random() * 3) + 1;
+            answerChoices.splice(formattedQuestion.answer -1, 0, loadedQuestion.correct_answer);
+
+            answerChoices.forEach((choice, index) => {
+                formattedQuestion["choice" + (index + 1)] = choice;
+            });
+
+            return formattedQuestion;
+        });
+       
+        startGame();
+        console.log("Loader hidden");
+    })
+    .catch(err => {
+        console.error(err);
+    });
 //  constants
 const CORRENT_BONUS = 10;
-const MAX_QUESTIONS = 3;
+const MAX_QUESTIONS = 10;
 
 startGame = () => {
+    console.log("Game started");
     questionCounter = 0;
     score = 0;
     availableQuestions = [...questions];
     
     getNewQuestion();
+    game.classList.remove("hidden");
+    loader.classList.add("hidden");
 };
 
 getNewQuestion = () => {
@@ -106,4 +112,3 @@ incrementScore = num => {
 
 };
 
-startGame();
